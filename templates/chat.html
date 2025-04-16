@@ -470,8 +470,7 @@
             <div class="user-info">
                 <div class="username">{{ friend.username }}</div>
                 <div class="status" id="user-status">
-                    
-                 
+                   
                 </div>
             </div>
         </div>
@@ -612,44 +611,10 @@
                 
                 chatMessages.appendChild(messageDiv);
                 scrollToBottom();
-                
-            } else if (data.type === 'typing') {
-                // Handle typing indicator
-                if (data.sender !== currUser) {
-                    if (data.is_typing) {
-                        typingIndicator.classList.add('active');
-                    } else {
-                        typingIndicator.classList.remove('active');
-                    }
-                    scrollToBottom();
-                }
-            } else if (data.type === 'status') {
-                // Handle user status updates
-                isOnline = data.status === 'Online';
-                userStatus.innerHTML = `
-                    <span class="status-dot"></span>
-                    <span>${data.status}</span>
-                `;
-                userStatus.classList.toggle('', !isOnline);
             }
         };
 
-        // Handle WebSocket errors
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-            userStatus.innerHTML = `
-                <span class="status-dot"></span>
-                
-            `;
-            userStatus.classList.add('offline');
-            
-            // Try to reconnect every 5 seconds
-            setTimeout(() => {
-                window.location.reload();
-            }, 5000);
-        };
-
-        // Send message function
+        // Send message function - fixed version
         async function sendMessage() {
             const message = messageInput.value.trim();
             const imageFile = imageUpload.files[0];
@@ -668,27 +633,26 @@
                         headers: {
                             'X-CSRFToken': '{{ csrf_token }}',
                             'Content-Type': 'multipart/form-data'
-                        }
+                        },
+                        timeout: 30000 // 30 seconds timeout for large files
                     }
                 );
 
                 if (response.data.status === 'success') {
-                    if (imageFile) {
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            chatSocket.send(JSON.stringify({
-                                'type': 'message',
-                                'message': event.target.result,
-                                'sender': currUser,
-                                'receiver': receiver,
-                                'isImage': true,
-                                'seen': false
-                            }));
-                        };
-                        reader.readAsDataURL(imageFile);
+                    // Handle image response
+                    if (imageFile && response.data.image_url) {
+                        chatSocket.send(JSON.stringify({
+                            'type': 'message',
+                            'message': response.data.image_url,
+                            'sender': currUser,
+                            'receiver': receiver,
+                            'isImage': true,
+                            'seen': false
+                        }));
                         clearImagePreview();
                     }
                     
+                    // Handle text message
                     if (message) {
                         chatSocket.send(JSON.stringify({
                             'type': 'message',
@@ -700,23 +664,16 @@
                         }));
                         messageInput.value = '';
                         messageInput.style.height = 'auto';
-                        sendBtn.disabled = true;
                     }
                     
-                    // Notify that user stopped typing
-                    if (isTyping) {
-                        chatSocket.send(JSON.stringify({
-                            'type': 'typing',
-                            'sender': currUser,
-                            'receiver': receiver,
-                            'is_typing': false
-                        }));
-                        isTyping = false;
-                    }
+                    sendBtn.disabled = true;
                 }
             } catch (error) {
-                console.error('Error sending message:', error);
-                alert('Failed to send message. Please try again.');
+                console.error('Error details:', error);
+                if (error.response) {
+                    console.error('Server response:', error.response.data);
+                }
+                alert('Message sending failed. Check console for details.');
             }
         }
 
@@ -728,11 +685,13 @@
         imageUpload.addEventListener('change', (e) => {
             if (e.target.files[0]) {
                 const file = e.target.files[0];
-                if (file.size > 5 * 1024 * 1024) { // 5MB limit
-                    alert('Image size should be less than 5MB');
+                
+                // Basic image validation
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file');
                     return;
                 }
-                
+
                 const reader = new FileReader();
                 
                 reader.onload = function(event) {
@@ -769,34 +728,6 @@
                 e.preventDefault();
                 sendMessage();
             }
-        });
-
-        // Typing indicator logic
-        messageInput.addEventListener('input', () => {
-            sendBtn.disabled = messageInput.value.trim() === '' && imageUpload.files.length === 0;
-            
-            if (!isTyping && messageInput.value.trim() !== '') {
-                isTyping = true;
-                chatSocket.send(JSON.stringify({
-                    'type': 'typing',
-                    'sender': currUser,
-                    'receiver': receiver,
-                    'is_typing': true
-                }));
-            }
-            
-            clearTimeout(typingTimeout);
-            typingTimeout = setTimeout(() => {
-                if (isTyping) {
-                    isTyping = false;
-                    chatSocket.send(JSON.stringify({
-                        'type': 'typing',
-                        'sender': currUser,
-                        'receiver': receiver,
-                        'is_typing': false
-                    }));
-                }
-            }, 2000);
         });
 
         // Scroll to bottom when page loads

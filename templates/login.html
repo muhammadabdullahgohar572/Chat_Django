@@ -168,13 +168,13 @@
     <div class="auth-container">
         <div class="auth-header">
             <h1 class="auth-title">Welcome Back</h1>
-            <p class="auth-subtitle">Login to continue to GreenChat</p>
+            <p class="auth-subtitle">Login to continue </p>
         </div>
         
         <form method="post" class="auth-form" onsubmit="return validateUsername()">
             {% csrf_token %}
             <div class="form-group">
-                <input type="text" placeholder="Email or Username" name="email_or_username" id="email_or_username" 
+                <input type="text" placeholder="Enter Yours Email" name="email_or_username" id="email_or_username" 
                        class="form-input" required value="{{ email }}" autocapitalize="off">
             </div>
             

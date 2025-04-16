@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "chat",
     "corsheaders",
+    'cloudinary',
 ]
 ASGI_APPLICATION = "devnoms.asgi.application"
 
