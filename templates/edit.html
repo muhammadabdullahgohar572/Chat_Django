@@ -1,218 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="GreenChat - Edit Profile">
+    <meta name="description" content="GreenChat is a modern web application for real-time messaging with friends.">
+    
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GreenChat">
+    <meta property="og:description" content="Real-time messaging web application">
+    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Django chatapp" />
-    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png" />
-    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json" />
-    <title>Edit</title>
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="GreenChat">
+    <meta property="twitter:description" content="Real-time messaging web application">
+    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json">
+    
+    <title>Edit Profile | GreenChat</title>
     <style>
-      * {
-        margin: 0%;
-        padding: 0%;
-        box-sizing: border-box;
-      }
-      body {
-        background-color: #131518;
-        font-family: century gothic;
-      }
-      
-      .container {
-        max-width: 500px;
-        margin: auto;
-        position: relative;
-        top: 30px;
-        height: 90vh;
-        background-color: #282a2d;
-        border: 2px solid rgb(255, 132, 0);
-        text-align: center;
-        border-radius: 8px;
-        box-shadow: 4px 4px 10px -4px #9339f5;
-      }
-      @media screen and (max-width: 550px) {
-        .container {
-          top: 0px;
-          max-width: 550px;
-          height: 100vh;
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --background: #121212;
+            --surface: #1e1e1e;
+            --error: #cf6679;
+            --success: #4caf50;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-      }
-      
-      #title {
-        color: #fff;
-        font-size: 48px;
-        margin-top: 40px;
-      }
-      
-      form {
-        width: 80%;
-        margin: 0px auto;
-      }
-      
-      #login-fields {
-        width: 100%;
-      }
-      
-      #login-fields input {
-        margin-bottom: 20px;
-        padding: 12px 0px;
-        width: 100%;
-        text-align: center;
-        color: #fff;
-        font-size: 20px;
-        background: #131518;
-        border-radius: 8px;
-        outline: none;
-        border: none;
-      }
-      ::placeholder {
-        color: #7a7a7a;
-        opacity: 1;
-      }
-      
-      #password-relative {
-        margin-bottom: 20px;
-        text-align: left;
-      }
-      
-      #password-relative a {
-        transition-duration: 0.2s;
-        color: #9339f5;
-        text-decoration: none;
-        font-size: 20px;
-        font-weight: 400;
-        outline: none;
-      }
-      
-      #password-relative a:hover,
-      #password-relative a:focus {
-        transition-duration: 0.2s;
-        color: #a57df5;
-      }
-      
-      button {
-        margin-bottom: 6px;
-        width: 60%;
-        color: #fff;
-        font-size: 20px;
-        background: #9339f5;
-        border: none;
-        border-radius: 8px;
-        outline: none;
-        cursor: pointer;
-        padding: 16px 0px;
-      }
-      
-      button:hover {
-        transition-duration: 0.2s;
-        background: #6421eb;
-      }
-      
-      .smessage {
-        width: 80%;
-        margin: 0px auto;
-        color: #39f542;
-        font-size: 18px;
-      }
-      
-      .smessage:hover {
-        transition-duration: 0.2s;
-        color: #7df587;
-      }
-      .emessage {
-        width: 80%;
-        margin: 0px auto;
-        color: #f53939;
-        font-size: 18px;
-      }
-      
-      .emessage:hover {
-        transition-duration: 0.2s;
-        color: #f57d7d;
-      }
-      label {
-        display: block;
-        text-align: left;
-        color: #fff;
-        margin-bottom: 8px;
-      }
-      @media screen and (max-width: 550px) {
-        form {
-          width: 90%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <br />
-      <br />
-      <br />
-      <div id="login-header">
-        <div id="title">Edit</div>
-      </div>
-      <br />
-      <br />
-      <br />
-      <form method="post" onsubmit="return validateUsername()">
-        {% csrf_token %}
-        <div id="login-fields">
-          <label for="username">Username</label>
-          <input type="text" name="username" id="username" class="form-control" value="{{ initial_data.username }}" required autocapitalize="none" />
-          <label for="username">Email</label>
-          <input type="email" name="email" id="email" class="form-control" value="{{ initial_data.email }}" required />
-        </div>
-        <div id="password-relative">
-          <div>
-            <a href="{% url 'home' %}">Home</a>
-          </div>
-        </div>
-        <button id="submit-button" type="submit">Update Profile</button>
-      </form>
-      <br />
-      <br />
 
-      {% if success_message %}
-        <p class="smessage">{{ success_message }}</p>
-      {% endif %}
-      {% if error_message %}
-        <p class="emessage">{{ error_message }}</p>
-      {% endif %}
-    </div>
-    <script>
-      function validateUsername() {
-        var usernameInput = document.getElementById('username')
-        console.log(usernameInput)
-        var usernameValue = usernameInput.value
-      
-        // Check if the username contains spaces
-        if (/\s/.test(usernameValue)) {
-          alert('Username cannot contain spaces.')
-          usernameInput.value = usernameValue.replace(/\s/g, '')
-          return false
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-      
-        return true // Allow form submission if there are no spaces
-      }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .edit-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .edit-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .edit-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-light);
+        }
+
+        .edit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            padding: 14px 16px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-button {
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .form-link {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .form-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 14px;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .edit-container {
+                padding: 30px 20px;
+            }
+            
+            .edit-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <div class="edit-header">
+            <h1 class="edit-title">Edit Profile</h1>
+        </div>
+        
+        <form method="post" class="edit-form" onsubmit="return validateUsername()">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" name="username" id="username" class="form-control form-input" 
+                       value="{{ initial_data.username }}" required autocapitalize="none">
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" name="email" id="email" class="form-control form-input" 
+                       value="{{ initial_data.email }}" required>
+            </div>
+            
+            <button type="submit" class="form-button">Update Profile</button>
+        </form>
+        
+        <div class="form-footer">
+            <a href="{% url 'home' %}" class="form-link">Back to Home</a>
+        </div>
+        
+        {% if success_message %}
+            <p class="success-message">{{ success_message }}</p>
+        {% endif %}
+        
+        {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        function validateUsername() {
+            var usernameInput = document.getElementById('username');
+            var usernameValue = usernameInput.value;
+            
+            if (/\s/.test(usernameValue)) {
+                alert('Username cannot contain spaces.');
+                usernameInput.value = usernameValue.replace(/\s/g, '');
+                return false;
+            }
+            
+            return true;
+        }
     </script>
-  </body>
+</body>
 </html>

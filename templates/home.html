@@ -1,249 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="GreenChat - Home">
+    <meta name="description" content="GreenChat is a modern web application for real-time messaging with friends.">
+    
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GreenChat">
+    <meta property="og:description" content="Real-time messaging web application">
+    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Django chatapp" />
-    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png" />
-    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json" />
-    <title>Home</title>
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="GreenChat">
+    <meta property="twitter:description" content="Real-time messaging web application">
+    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json">
+    
+    <title>Home | GreenChat</title>
     <style>
-      * {
-        margin: 0%;
-        padding: 0%;
-        box-sizing: border-box;
-        font-family: 'Inter', sans-serif;
-        text-transform: capitalize;
-      }
-      
-      :root {
-        font-size: 62.5%;
-      }
-      
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      
-      ::-webkit-scrollbar-thumb {
-        background-color: white;
-      }
-      
-      ::-webkit-scrollbar-thumb {
-        background-color: #374045;
-      }
-      
-      ::-webkit-scrollbar-track {
-        background-color: transparent;
-      }
-      
-      body {
-        background-color: #131518;
-        font-family: sans-serif;
-        color: aliceblue;
-      }
-      
-      .container {
-        max-width: 500px;
-        margin: auto;
-        position: relative;
-        top: 30px;
-        height: 90vh;
-        background-color: #282a2d;
-        border: 2px solid rgb(255, 132, 0);
-        text-align: center;
-        border-radius: 8px;
-        box-shadow: 4px 4px 10px -4px #9339f5;
-        overflow-y: hidden;
-      }
-      
-      @media screen and (max-width: 550px) {
-        .container {
-          top: 0px;
-          max-width: 550px;
-          height: 100vh;
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --background: #121212;
+            --surface: #1e1e1e;
+            --surface-light: #2a2a2a;
+            --error: #cf6679;
+            --success: #4caf50;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-      }
-      
-      a {
-        display: inline-block;
-        width: 100%;
-        text-decoration: none;
-        color: aliceblue;
-        cursor: pointer;
-        /* border: 1px solid white; */
-      }
-      
-      .row1 {
-        display: flex;
-        justify-content: space-around;
-        border-bottom: 1px solid rgb(76, 76, 76);
-      }
-      
-      .top_row div {
-        width: 100%;
-      }
-      
-      .top_row {
-        font-size: 1.6rem;
-        padding: 1em 0em;
-        border-bottom: 1px solid rgb(146, 146, 146);
-      }
-      
-      .row2 div {
-        width: 100%;
-        padding: 1em 0em;
-      }
-      
-      .row2 {
-        position: relative;
-        border: none;
-        background: #646464;
-        /* border-bottom: 1px solid rgb(255, 255, 255); */
-      }
-      .friend {
-        background: #000;
-      }
-      
-      div.row2 div.moving {
-        width: 50%;
-        padding: 1.1em 0em;
-        position: absolute;
-        left: 0%;
-        /* border-radius: 20px 20px 0px 0px; */
-        background: #000;
-        border-bottom: 0px solid rgb(120, 120, 120);
-        transition: left 0.5s ease;
-        z-index: 2;
-      }
-      
-      .btn {
-        font-size: 1.6rem;
-        display: inline-block;
-        width: 100%;
-        text-decoration: none;
-        color: aliceblue;
-        cursor: pointer;
-        background: transparent;
-        outline: none;
-        border: none;
-      }
-      
-      .friend_list {
-        height: 100%;
-        overflow-y: scroll;
-      }
-      
-      .request_list {
-        display: none;
-        height: 100%;
-        overflow-y: scroll;
-      }
-      
-      .user {
-        font-size: 1.6rem;
-        padding: 1em 0px;
-      }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+    
+            margin: 0 auto;
+            height: 99vh;
+            background-color: var(--surface);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .username {
+            font-weight: 500;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: background-color 0.3s;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary-light);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .friend-list, .request-list {
+            display: none;
+        }
+
+        .friend-list.active, .request-list.active {
+            display: block;
+        }
+
+        .friend-item {
+            padding: 16px;
+            border-radius: var(--border-radius);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .friend-item:hover {
+            background-color: var(--surface-light);
+        }
+
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .friend-name {
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .nav-button {
+                padding: 8px;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     {% for message in messages %}
-      <span class="success">{{ message }}</span>
+        <div class="success-message" id="success-message">{{ message }}</div>
     {% endfor %}
 
     <div class="container">
-      <div class="row1 top_row">
-        <div class="col1">
-          <a>{{ data.username }}</a>
-        </div>
-        <div>
-          <a href="{% url 'edit' %}" class="btn btn-primary">Edit</a>
-        </div>
-        <div>
-          <a href="{% url 'search' %}" class="btn btn-primary">search</a>
-        </div>
-        <div>
-          <a href="{% url 'logout' %}" class="btn btn-primary">logout</a>
-        </div>
-      </div>
-      <div class="row1 row2">
-        <div class="moving">
-          <button class="btn">friends</button>
-        </div>
-        <div class="friends col1 bg1">
-          <button class="btn friend_btn">friends</button>
-        </div>
-        <div class="request col1">
-          <button class="btn request_btn">request</button>
-        </div>
-      </div>
-      <div class="friend_list">
-        {% for friend_data in data.friends %}
-          {% if friend_data.accepted %}
-            <div class="row1 user">
-              <a href="../chat/{{ friend_data.username }}/">{{ friend_data.username }}</a>
+        <div class="header">
+            <div class="user-info">
+                <div class="user-avatar">{{ data.username|first|upper }}</div>
+                <div class="username">{{ data.username }}</div>
             </div>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <div class="request_list">
-        {% for users_data in data.requests %}
-          <div class="row1 user">
-            <a href="{{ users_data.username }}">{{ users_data.username }}</a>
-          </div>
-        {% endfor %}
-      </div>
+            <div class="nav-buttons">
+                <button class="nav-button" onclick="window.location.href='{% url 'edit' %}'">Edit</button>
+                <button class="nav-button" onclick="window.location.href='{% url 'search' %}'">Search</button>
+                <button class="nav-button" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="friends">Friends</div>
+            <div class="tab" data-tab="requests">Requests</div>
+        </div>
+        
+        <div class="content">
+            <div class="friend-list active">
+                {% if data.friends %}
+                    {% for friend_data in data.friends %}
+                        {% if friend_data.accepted %}
+                            <a href="../chat/{{ friend_data.username }}/" class="friend-item">
+                                <div class="friend-avatar">{{ friend_data.username|first|upper }}</div>
+                                <div class="friend-name">{{ friend_data.username }}</div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>You don't have any friends yet.</p>
+                        <p>Search for users to add them as friends.</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="request-list">
+                {% if data.requests %}
+                    {% for users_data in data.requests %}
+                        <a href="{{ users_data.username }}" class="friend-item">
+                            <div class="friend-avatar">{{ users_data.username|first|upper }}</div>
+                            <div class="friend-name">{{ users_data.username }}</div>
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>No pending friend requests.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
     <script>
-      message = document.querySelector('.success')
-      if (message) {
-        alert(message.innerText)
-        message.innerHTML = ''
-      }
-      friend_btn = document.querySelector('.friend_btn')
-      friend = document.querySelector('.friends')
-      friend_list = document.querySelector('.friend_list')
-      request_list = document.querySelector('.request_list')
-      request_btn = document.querySelector('.request_btn')
-      request = document.querySelector('.request')
-      moving = document.querySelector('.moving')
-      request_btn.addEventListener('click', () => {
-        request_list.style.display = 'block'
-        friend_list.style.display = 'none'
-        moving.style.right = '0%'
-        moving.style.background = 'black'
-        moving.innerHTML = '<button class="btn request_btn">request</button>'
-        moving.style.left = '50%'
-        moving.style.borderRadiusLeft = '0px'
-      })
-      friend_btn.addEventListener('click', () => {
-        request_list.style.display = 'none'
-        friend_list.style.display = 'block'
-        moving.style.background = 'black'
-        moving.style.right = '50%'
-        moving.innerHTML = '<button class="btn friend_btn">friends</button>'
-        moving.style.left = '0%'
-      })
+        // Show success message if exists
+        const successMessage = document.getElementById('success-message');
+        if (successMessage) {
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        const friendList = document.querySelector('.friend-list');
+        const requestList = document.querySelector('.request-list');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                if (tab.dataset.tab === 'friends') {
+                    friendList.classList.add('active');
+                    requestList.classList.remove('active');
+                } else {
+                    friendList.classList.remove('active');
+                    requestList.classList.add('active');
+                }
+            });
+        });
     </script>
-  </body>
+</body>
 </html>

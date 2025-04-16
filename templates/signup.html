@@ -1,207 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="GreenChat - Sign Up">
+    <meta name="description" content="GreenChat is a modern web application for real-time messaging with friends.">
+    
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GreenChat">
+    <meta property="og:description" content="Real-time messaging web application">
+    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Django chatapp" />
-    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png" />
-    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json" />
-    <title>Signup</title>
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="GreenChat">
+    <meta property="twitter:description" content="Real-time messaging web application">
+    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json">
+    
+    <title>Sign Up | GreenChat</title>
     <style>
-      * {
-        margin: 0%;
-        padding: 0%;
-        box-sizing: border-box;
-      }
-      body {
-        background-color: #131518;
-        font-family: century gothic;
-      }
-      
-      .container {
-        max-width: 500px;
-        margin: auto;
-        position: relative;
-        top: 30px;
-        height: 90vh;
-        background-color: #282a2d;
-        border: 2px solid rgb(255, 132, 0);
-        text-align: center;
-        border-radius: 8px;
-        box-shadow: 4px 4px 10px -4px #9339f5;
-      }
-      @media screen and (max-width: 550px) {
-        .container {
-          top: 0px;
-          max-width: 550px;
-          height: 100vh;
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --background: #121212;
+            --surface: #1e1e1e;
+            --error: #cf6679;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-      }
-      
-      #title {
-        color: #fff;
-        font-size: 48px;
-        margin-top: 40px;
-      }
-      
-      form {
-        width: 80%;
-        margin: 0px auto;
-      }
-      
-      #login-fields {
-        width: 100%;
-      }
-      
-      #login-fields input {
-        margin-bottom: 20px;
-        padding: 10px 0px;
-        width: 100%;
-        text-align: center;
-        color: #fff;
-        font-size: 20px;
-        background: #131518;
-        border-radius: 8px;
-        outline: none;
-        border: none;
-      }
-      ::placeholder {
-        color: #7a7a7a;
-        opacity: 1;
-      }
-      
-      #password-relative {
-        margin-bottom: 20px;
-        text-align: left;
-      }
-      
-      #password-relative a {
-        transition-duration: 0.2s;
-        color: #9339f5;
-        text-decoration: none;
-        font-size: 20px;
-        font-weight: 400;
-        outline: none;
-      }
-      
-      #password-relative a:hover,
-      #password-relative a:focus {
-        transition-duration: 0.2s;
-        color: #a57df5;
-      }
-      
-      button {
-        margin-bottom: 6px;
-        width: 60%;
-        color: #fff;
-        font-size: 20px;
-        background: #9339f5;
-        border: none;
-        border-radius: 8px;
-        outline: none;
-        cursor: pointer;
-        padding: 16px 0px;
-      }
-      
-      button:hover {
-        transition-duration: 0.2s;
-        background: #6421eb;
-      }
-      .message {
-        width: 80%;
-        margin: 0px auto;
-        color: #f53939;
-        font-size: 18px;
-      }
-      
-      .message:hover {
-        transition-duration: 0.2s;
-        color: #f57d7d;
-      }
-      
-      @media screen and (max-width: 550px) {
-        form {
-          width: 90%;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-      }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-light);
+        }
+
+        .auth-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-input {
+            padding: 14px 16px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .form-button {
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .form-link {
+            color: var(--primary-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .form-link:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .password-requirements {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 30px 20px;
+            }
+            
+            .auth-title {
+                font-size: 24px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      <br />
-      <br />
-      <div id="login-header">
-        <div id="title">Signup</div>
-      </div>
-      <br />
-      <br />
-
-      <form action method="post" onsubmit="return validateForm()">
-        {% csrf_token %}
-        <div id="login-fields">
-          <input type="text" autocapitalize="none" placeholder="Username" name="username" id="username" value="{{ userdata.username }}" required />
-
-          <input type="email" placeholder="Email" name="email" id="email" value="{{ userdata.useremail }}" required />
-
-          <input type="password" placeholder="Password" id="password1" name="password1" required />
-
-          <input type="password" placeholder="Confirm Password" id="password2" name="password2" required />
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Create Account</h1>
+            <p class="auth-subtitle">Join GreenChat to connect with friends</p>
         </div>
-        <div id="password-relative">
-          <div>
-            <a href="{% url 'login' %}">Login</a>
-          </div>
+        
+        <form action method="post" class="auth-form" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" placeholder="Username" name="username" id="username" 
+                       class="form-input" value="{{ userdata.username }}" required autocapitalize="none">
+            </div>
+            
+            <div class="form-group">
+                <input type="email" placeholder="Email" name="email" id="email" 
+                       class="form-input" value="{{ userdata.useremail }}" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" placeholder="Password" id="password1" name="password1" 
+                       class="form-input" required>
+                <p class="password-requirements">Use at least 8 characters</p>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" placeholder="Confirm Password" id="password2" name="password2" 
+                       class="form-input" required>
+            </div>
+            
+            <button type="submit" class="form-button">Create Account</button>
+        </form>
+        
+        <div class="form-footer">
+            Already have an account? <a href="{% url 'login' %}" class="form-link">Log in</a>
         </div>
-        <button type="submit">Signup</button>
-      </form>
-      <br />
-      <p class="message">{{ error_message }}</p>
+        
+        <p class="error-message">{{ error_message }}</p>
     </div>
+
     <script>
-      function validateForm() {
-        var usernameInput = document.getElementById('username')
-        var username = document.getElementById('username').value
-        var email = document.getElementById('email').value
-        var password1 = document.getElementById('password1').value
-        var password2 = document.getElementById('password2').value
-      
-        if (/\s/.test(username)) {
-          alert('Username cannot contain spaces.')
-          return false
+        function validateForm() {
+            var usernameInput = document.getElementById('username');
+            var username = document.getElementById('username').value;
+            var email = document.getElementById('email').value;
+            var password1 = document.getElementById('password1').value;
+            var password2 = document.getElementById('password2').value;
+            
+            // Check for spaces in username
+            if (/\s/.test(username)) {
+                alert('Username cannot contain spaces.');
+                return false;
+            }
+            
+            // Check if any field is empty
+            if (username === '' || email === '' || password1 === '' || password2 === '') {
+                document.querySelector('.error-message').textContent = 'Please fill in all required fields.';
+                return false;
+            }
+            
+            // Check password match
+            if (password1 !== password2) {
+                document.querySelector('.error-message').textContent = 'Your password and confirmation password do not match.';
+                return false;
+            }
+            
+            // Check password length
+            if (password1.length < 8) {
+                document.querySelector('.error-message').textContent = 'Password must be at least 8 characters long.';
+                return false;
+            }
+            
+            return true;
         }
-        if (username === '' || email === '' || password1 === '' || password2 === '') {
-          document.querySelector('.message').innerHTML = 'Please fill in all required fields.'
-          return false
+
+        // Prevent form resubmission on refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
         }
-        if (password1 !== password2) {
-          document.querySelector('.message').innerHTML = 'Your password and confirmation password do not match.'
-          return false
-        }
-        return true // Allow form submission if all checks pass
-      }
-      // Prevent form resubmission on refresh
-      if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href)
-      }
     </script>
-  </body>
+</body>
 </html>

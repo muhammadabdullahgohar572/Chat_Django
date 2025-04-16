@@ -1,23 +1,8 @@
 
-# [Django Chat Application (Devnoms)](https://devnoms.onrender.com)
-
-<div style="text-align: center;">
-  <a href="https://devnoms.onrender.com">
-    <img src="https://filesstatic.netlify.app/Chatapp/img/logo_750x750.png" alt="Devnoms Logo" style="width: 250px;">
-  </a>
-</div>
-
 🚀 Welcome to **Devnoms Chat App**, a modern, feature-rich real-time chat platform! Designed to empower seamless communication, **Devnoms Chat App** allows users to connect with friends, manage profiles, and engage in real-time conversations with an intuitive interface and cutting-edge features.
 
 ---
 
-## 🌐 **Live Preview**
-
-Experience the power of **Devnoms Chat App** right now:
-
-[![Live Preview](https://img.shields.io/badge/Live-Preview-brightgreen?style=for-the-badge&logo=django)](https://devnoms.onrender.com)
-
----
 
 ## 🌟 **About Devnoms Chat App**
 
@@ -136,19 +121,7 @@ We welcome contributions to **Devnoms Chat App**!
 
 Here’s a preview of the **Devnoms Chat App**:
 
-**Login Page**  
-![Login](https://filesstatic.netlify.app/Chatapp/img/login.png)
 
-**Signup Page**  
-![Signup](https://filesstatic.netlify.app/Chatapp/img/signup.png)
-
-**Chat Interface**  
-![Chat Interface](https://filesstatic.netlify.app/Chatapp/img/chat.png)
-
-**Profile Management**  
-![Edit Profile](https://filesstatic.netlify.app/Chatapp/img/edit.png)
-
----
 
 ## 📜 **License**
 
@@ -160,4 +133,4 @@ The **Devnoms Chat App** is released under the [MIT License](LICENSE).
 
 Don’t miss out on seamless communication with **Devnoms Chat App**! Start chatting now and experience a whole new level of connectivity.
 
-🔗 [**Try Devnoms Now**](https://devnoms.onrender.com)
+

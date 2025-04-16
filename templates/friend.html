@@ -1,185 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="GreenChat - User Profile">
+    <meta name="description" content="GreenChat is a modern web application for real-time messaging with friends.">
+    
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Django chatapp" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GreenChat">
+    <meta property="og:description" content="Real-time messaging web application">
+    <meta property="og:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Django chatapp" />
-    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg" />
-    <meta name="description" content=" Django Chat Connect is a web application powered by Django, using AJAX JavaScript for real-time messaging. It enables user-friendly 
-chat, friend management, and social interaction." />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png" />
-    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json" />
-    <title>User</title>
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="GreenChat">
+    <meta property="twitter:description" content="Real-time messaging web application">
+    <meta property="twitter:image" content="https://filesstatic.netlify.app/Chatapp/img/share.jpeg">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="https://filesstatic.netlify.app/chatapp/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://filesstatic.netlify.app/chatapp/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="https://filesstatic.netlify.app/chatapp/favicon_io/manifest.json">
+    
+    <title>{{ user_details.username }} | GreenChat</title>
     <style>
-      * {
-        margin: 0%;
-        padding: 0%;
-        box-sizing: border-box;
-        font-family: 'Inter', sans-serif;
-      }
-      
-      :root {
-        font-size: 62.5%;
-      }
-      
-      body {
-        background-color: #131518;
-        font-family: sans-serif;
-        color: aliceblue;
-      }
-      
-      .container {
-        max-width: 500px;
-        margin: auto;
-        position: relative;
-        top: 30px;
-        height: 90vh;
-        background-color: #282a2d;
-        border: 2px solid rgb(255, 132, 0);
-        text-align: center;
-        border-radius: 8px;
-        box-shadow: 4px 4px 10px -4px #9339f5;
-        overflow-y: hidden;
-      }
-      
-      @media screen and (max-width: 550px) {
-        .container {
-          top: 0px;
-          max-width: 550px;
-          height: 100vh;
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --background: #121212;
+            --surface: #1e1e1e;
+            --error: #cf6679;
+            --success: #4caf50;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-      }
-      
-      a {
-        display: inline-block;
-        padding: 1.3rem 2rem;
-        border-radius: 5px;
-        border: 2px solid #131518;
-        text-decoration: none;
-        color: aliceblue;
-        cursor: pointer;
-      }
-      .sbtn {
-        padding: 1.3rem 2rem;
-        color: #fff;
-        background: #9339f5;
-        border: none;
-        border-radius: 5px;
-        outline: none;
-        cursor: pointer;
-        font-size: 1.6rem;
-      }
-      .sbtn:hover {
-        transition-duration: 0.2s;
-        background: #6421eb;
-      }
-      .cbtn{
-        padding: 0%;
-      }
-      .row {
-        display: flex;
-        justify-content: center;
-      }
-      
-      .is_friend .dbtn {
-        margin-right: 1em;
-      }
-      .is_friend .cbtn {
-        margin-left: 1em;
-      }
-      .message {
-        width: 80%;
-        margin: 140px auto;
-        color: #f53939;
-        font-size: 2rem;
-      }
-      
-      .message:hover {
-        transition-duration: 0.2s;
-        color: #f57d7d;
-      }
-      
-      .info {
-        font-size: 2rem;
-        margin: 10rem 0rem 5rem 0rem;
-        line-height: 4rem;
-      }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .profile-header {
+            margin-bottom: 32px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 600;
+            color: white;
+            margin: 0 auto 16px;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .profile-email {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .action-button {
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .action-button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .action-button.secondary {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .action-button.secondary:hover {
+            background-color: rgba(46, 125, 50, 0.1);
+        }
+
+        .action-button.danger {
+            background-color: var(--error);
+        }
+
+        .action-button.danger:hover {
+            background-color: #b71c1c;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .action-row .action-button {
+            flex: 1;
+        }
+
+        .message {
+            color: var(--error);
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 480px) {
+            .profile-container {
+                padding: 30px 20px;
+            }
+            
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 32px;
+            }
+            
+            .profile-name {
+                font-size: 20px;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div class="container">
-      {% if messages %}
-        <div class="message">
-          {% for message in messages %}
-            {{ message }}
-          {% endfor %}
-        </div>
-      {% else %}
-        <div class="info">
-          <p class="username">Username: {{ user_details.username }}</p>
-          <p class="email">Email: {{ user_details.email }}</p>
-        </div>
-      {% endif %}
-      {% if user_details.send_request %}
-        <div class="send_request">
-          <form method="post" action="{% url 'add_friend' %}">
-            {% csrf_token %}
-            <input hidden type="text" name="username" value="{{ user_details.username }}" />
-            <button class="sbtn" type="submit">Send Request</button>
-          </form>
-        </div>
-      {% elif user_details.not_accepted %}
-        <div class="delete_request">
-          <form method="post" action="{% url 'delete_friend' %}">
-            {% csrf_token %}
-            <input hidden type="text" name="username" value="{{ user_details.username }}" />
-            <button class="sbtn" type="submit">Delete Your Request</button>
-          </form>
-        </div>
-      {% elif user_details.me_not_accepted %}
-        <div class="accept_request">
-          <form method="post" action="{% url 'accept_request' %}">
-            {% csrf_token %}
-            <input hidden type="text" name="username" value="{{ user_details.username }}" />
-            <button class="sbtn" type="submit">Accept Request</button>
-          </form>
-        </div>
-      {% else %}
-        {% if user_details.is_friend %}
-          <div class="row is_friend">
-            <form method="post" action="{% url 'delete_friend' %}">
-              {% csrf_token %}
-              <input hidden type="text" name="username" value="{{ user_details.username }}" />
-              <button class="sbtn dbtn" type="submit">Remove Friend</button>
-            </form>
-            <button class="sbtn cbtn">
-              <a href="../../chat/{{ user_details.username }}" class="btn btn-primary">Chat</a>
-            </button>
-          </div>
+</head>
+<body>
+    <div class="profile-container">
+        {% if messages %}
+            <div class="message">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
         {% endif %}
-      {% endif %}
+        
+        <div class="profile-header">
+            <div class="profile-avatar">{{ user_details.username|first|upper }}</div>
+            <h1 class="profile-name">{{ user_details.username }}</h1>
+            <p class="profile-email">{{ user_details.email }}</p>
+        </div>
+        
+        <div class="profile-actions">
+            {% if user_details.send_request %}
+                <form method="post" action="{% url 'add_friend' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{ user_details.username }}">
+                    <button type="submit" class="action-button">Send Friend Request</button>
+                </form>
+            {% elif user_details.not_accepted %}
+                <form method="post" action="{% url 'delete_friend' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{ user_details.username }}">
+                    <button type="submit" class="action-button danger">Cancel Request</button>
+                </form>
+            {% elif user_details.me_not_accepted %}
+                <form method="post" action="{% url 'accept_request' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="username" value="{{ user_details.username }}">
+                    <button type="submit" class="action-button">Accept Friend Request</button>
+                </form>
+            {% else %}
+                {% if user_details.is_friend %}
+                    <div class="action-row">
+                        <form method="post" action="{% url 'delete_friend' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="username" value="{{ user_details.username }}">
+                            <button type="submit" class="action-button danger">Remove Friend</button>
+                        </form>
+                        <a href="../../chat/{{ user_details.username }}" class="action-button secondary">Start Chat</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+            
+            <a href="{% url 'home' %}" class="action-button secondary">Back to Home</a>
+        </div>
     </div>
 
     <script>
-      if (window.history.replaceState) {
-        window.history.replaceState(null, null, window.location.href)
-      }
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
     </script>
-  </body>
+</body>
 </html>
