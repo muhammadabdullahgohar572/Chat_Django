@@ -120,25 +120,25 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'koyebdb',
-#         'USER': 'koyeb-adm',
-#         'PASSWORD': 'npg_hj27JSByFZLU',
-#         'HOST': 'ep-late-darkness-a2hkcdfj.eu-central-1.pg.koyeb.app',
-#         'OPTIONS': {'sslmode': 'require'},
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'koyebdb',
+        'USER': 'koyeb-adm',
+        'PASSWORD': 'npg_hj27JSByFZLU',
+        'HOST': 'ep-late-darkness-a2hkcdfj.eu-central-1.pg.koyeb.app',
+        'OPTIONS': {'sslmode': 'require'},
+    }
+}
 
 import cloudinary
 import cloudinary.uploader
