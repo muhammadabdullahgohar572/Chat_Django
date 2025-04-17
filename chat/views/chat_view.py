@@ -31,38 +31,42 @@ def chat(request, username):
 
     if request.method == "POST":
         message_text = request.POST.get("message", "").strip()
-        image = request.FILES.get('image')  # Get uploaded image
+        images = request.FILES.getlist('images')  # Get all uploaded images
         
-        response_data = {"status": "success"}
+        response_data = {"status": "success", "image_urls": []}
+        messages_created = []
         
-        # Create message only if there's content or image
-        if message_text or image:
-            # Handle text message
+        # Create message only if there's content or images
+        if message_text or images:
+            # Handle text message if exists
             if message_text:
                 message = Messages.objects.create(
                     sender_name=usersen,
                     receiver_name=friend,
                     description=message_text,
                 )
+                messages_created.append(message.id)
                 response_data['message_id'] = message.id
             
-            # Handle image upload using Cloudinary
-            if image:
-                # Upload image to Cloudinary
-                upload_result = cloudinary.uploader.upload(
-                    image,
-                    folder="chat_images/"
-                )
-                
-                # Create a new message for the image
-                message = Messages.objects.create(
-                    sender_name=usersen,
-                    receiver_name=friend,
-                    photo=upload_result['secure_url']  # Store Cloudinary URL
-                )
-                
-                response_data['image_url'] = message.photo
+            # Handle image uploads using Cloudinary
+            for image in images:
+                if image:  # Check if file exists
+                    # Upload image to Cloudinary
+                    upload_result = cloudinary.uploader.upload(
+                        image,
+                        folder="chat_images/"
+                    )
+                    
+                    # Create a new message for the image
+                    message = Messages.objects.create(
+                        sender_name=usersen,
+                        receiver_name=friend,
+                        photo=upload_result['secure_url']  # Store Cloudinary URL
+                    )
+                    messages_created.append(message.id)
+                    response_data['image_urls'].append(message.photo)
             
+            response_data['messages_created'] = messages_created
             return JsonResponse(response_data)
         else:
             return JsonResponse({"status": "error", "message": "No content provided"}, status=400)
@@ -76,7 +80,7 @@ def chat(request, username):
             "chat.html",
             {
                 "relation_key": relation.relation_key,
-                "messages": messages.order_by('time'),
+                "messages": messages.order_by('timestamp'),
                 "curr_user": usersen,
                 "friend": friend,
             },

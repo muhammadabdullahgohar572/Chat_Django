@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         :root {
             --primary-color: #2e7d32;
@@ -169,6 +171,11 @@
             color: white;
         }
 
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+
         .message-image {
             max-width: 100%;
             max-height: 300px;
@@ -180,6 +187,56 @@
 
         .message-image:hover {
             transform: scale(1.02);
+        }
+
+        .download-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .image-container:hover .download-image {
+            opacity: 1;
+        }
+
+        .download-image:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .download-all-images {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            font-size: 1.2rem;
+        }
+
+        .download-all-images:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.05);
         }
 
         .message-text {
@@ -337,53 +394,42 @@
             display: none;
         }
 
-        .image-preview {
+        .image-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px;
+        }
+        
+        .image-preview-item {
             position: relative;
-            margin-bottom: 8px;
-            max-width: 200px;
+            width: 100px;
+            height: 100px;
             border-radius: 8px;
             overflow: hidden;
         }
-
-        .image-preview img {
-            max-width: 100%;
-            display: block;
+        
+        .image-preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-
+        
         .remove-image {
             position: absolute;
-            top: 8px;
-            right: 8px;
+            top: 4px;
+            right: 4px;
             background-color: var(--error-color);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            font-size: 1rem;
-            transition: transform 0.2s;
-        }
-
-        .remove-image:hover {
-            transform: scale(1.1);
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: var(--border-color);
-            border-radius: 3px;
+            font-size: 0.8rem;
         }
 
         /* Message status icons */
@@ -423,6 +469,20 @@
             margin-bottom: 16px;
         }
 
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 3px;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .message {
@@ -439,6 +499,11 @@
             
             .chat-input-container {
                 padding: 10px 12px;
+            }
+            
+            .image-preview-item {
+                width: 80px;
+                height: 80px;
             }
         }
 
@@ -457,6 +522,11 @@
                 height: 36px;
                 font-size: 1.3rem;
             }
+            
+            .image-preview-item {
+                width: 70px;
+                height: 70px;
+            }
         }
     </style>
 </head>
@@ -470,7 +540,7 @@
             <div class="user-info">
                 <div class="username">{{ friend.username }}</div>
                 <div class="status" id="user-status">
-                   
+                    <!-- Status will be updated via JavaScript -->
                 </div>
             </div>
         </div>
@@ -495,13 +565,16 @@
                 {% for message in messages %}
                     <div class="message {% if curr_user == message.sender_name %}outgoing{% else %}incoming{% endif %}">
                         {% if message.photo %}
-                            <img src="{{ message.photo.url }}" class="message-image" alt="Sent image">
+                            <div class="image-container">
+                                <img src="{{ message.photo.url }}" class="message-image" alt="Sent image" onclick="downloadImage('{{ message.photo.url }}')">
+                                <button download="{{ message.photo }}">Please Image</button>
+                            </div>
                         {% endif %}
                         {% if message.description %}
                             <div class="message-text">{{ message.description }}</div>
                         {% endif %}
                         <div class="message-time">
-                            {{ message.time|time:"H:i" }}
+                            {{ message.timestamp|time:"H:i" }}
                             {% if curr_user == message.sender_name %}
                                 <span class="message-status {% if message.seen %}double{% else %}single{% endif %}">
                                     <i class="fas fa-check"></i>
@@ -514,14 +587,16 @@
         </div>
 
         <div id="image-preview-container" class="image-preview-container">
-            <!-- Image preview will be inserted here -->
+            <div class="image-previews" id="image-previews">
+                <!-- Multiple image previews will be inserted here -->
+            </div>
         </div>
 
         <div class="chat-input-container">
-            <button class="attachment-btn" id="attachment-btn" title="Attach image">
+            <button class="attachment-btn" id="attachment-btn" title="Attach images">
                 <i class="fas fa-paperclip"></i>
             </button>
-            <input type="file" id="image-upload" accept="image/*" style="display: none;">
+            <input type="file" id="image-upload" accept="image/*" style="display: none;" multiple>
             
             <textarea class="message-input" id="message-input" placeholder="Type a message..." rows="1" autocomplete="off"></textarea>
             
@@ -529,98 +604,278 @@
                 <i class="fas fa-paper-plane send-icon"></i>
             </button>
         </div>
+
+        <!-- Download all images button (shown only when there are images) -->
+        {% if messages %}
+            {% with has_images=False %}
+                {% for message in messages %}
+                    {% if message.photo %}
+                        {% with has_images=True %}
+                        {% endwith %}
+                    {% endif %}
+                {% endfor %}
+                {% if has_images %}
+                    <button class="download-all-images" id="download-all-images" title="Download all images as ZIP">
+                        <i class="fas fa-file-archive"></i>
+                    </button>
+                {% endif %}
+            {% endwith %}
+        {% endif %}
     </div>
 
     <script>
-        // WebSocket connection
-        const currUser = '{{ curr_user.username }}';
-        const roomName = '{{ relation_key }}';
-        const receiver = '{{ friend.username }}';
+        // Get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // DOM elements
         const chatMessages = document.getElementById('chat-messages');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
         const attachmentBtn = document.getElementById('attachment-btn');
         const imageUpload = document.getElementById('image-upload');
         const imagePreviewContainer = document.getElementById('image-preview-container');
+        const imagePreviews = document.getElementById('image-previews');
         const typingIndicator = document.getElementById('typing-indicator');
         const userStatus = document.getElementById('user-status');
-        
-        let typingTimeout;
-        let isTyping = false;
-        let isOnline = true;
-        let refreshInterval;
-    
-        // Function to fetch new messages
-        async function fetchNewMessages() {
+        const downloadAllBtn = document.getElementById('download-all-images');
+
+        // Function to force download of an image
+        function downloadImage(imageUrl) {
+            const link = document.createElement('a');
+            link.href = imageUrl;
+            link.download = 'chat-image-' + Date.now() + '.jpg';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Function to download all images as a ZIP file
+        async function downloadAllImagesAsZip() {
+            if (!downloadAllBtn) return;
+            
+            // Show loading state
+            const originalContent = downloadAllBtn.innerHTML;
+            downloadAllBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            downloadAllBtn.disabled = true;
+            
             try {
-                const response = await axios.get(window.location.href);
-                if (response.data && response.data.messages) {
-                    updateChatMessages(response.data.messages);
+                // Get all image URLs from the chat
+                const imageElements = document.querySelectorAll('.message-image');
+                const imageUrls = Array.from(imageElements).map(img => img.src);
+                
+                if (imageUrls.length === 0) {
+                    alert('No images found to download');
+                    return;
+                }
+                
+                // Create a new JSZip instance
+                const zip = new JSZip();
+                const imgFolder = zip.folder("chat_images");
+                
+                // Fetch each image and add it to the zip
+                for (let i = 0; i < imageUrls.length; i++) {
+                    try {
+                        const response = await fetch(imageUrls[i]);
+                        if (!response.ok) throw new Error(`Failed to fetch image ${i}`);
+                        const blob = await response.blob();
+                        imgFolder.file(`image_${i}.jpg`, blob);
+                    } catch (error) {
+                        console.error(`Error fetching image ${i}:`, error);
+                    }
+                }
+                
+                // Generate the zip file
+                const content = await zip.generateAsync({ type: "blob" });
+                
+                // Download the zip file
+                saveAs(content, `chat_images_${new Date().toISOString().split('T')[0]}.zip`);
+                
+            } catch (error) {
+                console.error('Error creating zip file:', error);
+                alert('Error creating download file. Please try again.');
+            } finally {
+                // Reset button state
+                if (downloadAllBtn) {
+                    downloadAllBtn.innerHTML = originalContent;
+                    downloadAllBtn.disabled = false;
+                }
+            }
+        }
+
+        // Set up download functionality for all existing messages
+        document.querySelectorAll('.image-container').forEach(container => {
+            const img = container.querySelector('.message-image');
+            const downloadBtn = container.querySelector('.download-image');
+            
+            if (img) {
+                // Make the image itself clickable for download
+                img.addEventListener('click', function() {
+                    downloadImage(img.src);
+                });
+                
+                // Also set up the download button if it exists
+                if (downloadBtn) {
+                    downloadBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        downloadImage(img.src);
+                    });
+                }
+            }
+        });
+
+        // Set up download all button if it exists
+        if (downloadAllBtn) {
+            downloadAllBtn.addEventListener('click', downloadAllImagesAsZip);
+        }
+
+        // Send message function with multiple image support
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            const imageFiles = imageUpload.files;
+            
+            if (!message && imageFiles.length === 0) {
+                alert('Please enter a message or attach an image');
+                return;
+            }
+
+            const formData = new FormData();
+            if (message) formData.append('message', message);
+            
+            // Append all selected images
+            for (let i = 0; i < imageFiles.length; i++) {
+                formData.append('images', imageFiles[i]);
+            }
+
+            try {
+                const response = await axios.post(
+                    window.location.href,
+                    formData,
+                    {
+                        headers: {
+                            'X-CSRFToken': csrftoken,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                );
+
+                if (response.data.status === 'success') {
+                    // Clear inputs and reload the page
+                    clearImagePreviews();
+                    messageInput.value = '';
+                    messageInput.style.height = 'auto';
+                    sendBtn.disabled = true;
+                    
+                    // Reload the page to show the new message
+                    window.location.reload();
                 }
             } catch (error) {
-                console.error('Error fetching new messages:', error);
+                console.error('Error sending message:', error);
+                if (error.response) {
+                    console.error('Server response:', error.response.data);
+                    alert('Error: ' + (error.response.data.message || 'Failed to send message'));
+                } else {
+                    alert('Network error. Please try again.');
+                }
             }
         }
-    
-        // Function to update chat messages
-        function updateChatMessages(messages) {
-            // Clear existing messages
-            const existingMessages = document.querySelectorAll('.message');
-            existingMessages.forEach(msg => msg.remove());
-            
-            // Remove empty state if it exists
-            const emptyState = document.querySelector('.empty-state');
-            if (emptyState) emptyState.remove();
-            
-            // Add new messages
-            messages.forEach(message => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${message.sender_name === currUser ? 'outgoing' : 'incoming'}`;
+
+        // Handle image upload for multiple files
+        imageUpload.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                imagePreviews.innerHTML = '';
                 
-                if (message.photo) {
-                    messageDiv.innerHTML = `
-                        <img src="${message.photo}" class="message-image" alt="Sent image">
-                        <div class="message-time">
-                            ${new Date(message.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                            ${message.sender_name === currUser ? 
-                                `<span class="message-status ${message.seen ? 'double' : 'single'}">
-                                    <i class="fas fa-check"></i>
-                                </span>` 
-                                : ''}
-                        </div>
-                    `;
-                } else if (message.description) {
-                    messageDiv.innerHTML = `
-                        <div class="message-text">${message.description}</div>
-                        <div class="message-time">
-                            ${new Date(message.time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                            ${message.sender_name === currUser ? 
-                                `<span class="message-status ${message.seen ? 'double' : 'single'}">
-                                    <i class="fas fa-check"></i>
-                                </span>` 
-                                : ''}
-                        </div>
-                    `;
+                // Check if any file is not an image
+                for (let i = 0; i < files.length; i++) {
+                    if (!files[i].type.startsWith('image/')) {
+                        alert('Please select only image files');
+                        clearImagePreviews();
+                        return;
+                    }
                 }
                 
-                chatMessages.appendChild(messageDiv);
-            });
-            
-            scrollToBottom();
-        }
-    
-        // Start auto-refresh
-        function startAutoRefresh() {
-            refreshInterval = setInterval(fetchNewMessages, 60000); // 60 seconds = 60000 milliseconds
-        }
-    
-        // Stop auto-refresh
-        function stopAutoRefresh() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
+                // Display previews for all images
+                for (let i = 0; i < files.length; i++) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'image-preview-item';
+                        previewItem.innerHTML = `
+                            <img src="${event.target.result}" alt="Preview">
+                            <button class="remove-image" onclick="removeImagePreview(${i})">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                        imagePreviews.appendChild(previewItem);
+                    };
+                    
+                    reader.readAsDataURL(files[i]);
+                }
+                
+                imagePreviewContainer.style.display = 'block';
+                sendBtn.disabled = messageInput.value.trim() === '' && files.length === 0;
             }
-        }
-    
+        });
+
+        // Function to remove a specific image preview
+        window.removeImagePreview = function(index) {
+            const files = imageUpload.files;
+            const newFiles = Array.from(files).filter((_, i) => i !== index);
+            
+            // Create new DataTransfer object to update files
+            const dataTransfer = new DataTransfer();
+            newFiles.forEach(file => dataTransfer.items.add(file));
+            imageUpload.files = dataTransfer.files;
+            
+            // Update previews
+            const event = new Event('change');
+            imageUpload.dispatchEvent(event);
+            
+            // If no files left, hide the preview container
+            if (newFiles.length === 0) {
+                imagePreviewContainer.style.display = 'none';
+            }
+        };
+
+        // Function to clear all image previews
+        window.clearImagePreviews = function() {
+            const dataTransfer = new DataTransfer();
+            imageUpload.files = dataTransfer.files;
+            imagePreviews.innerHTML = '';
+            imagePreviewContainer.style.display = 'none';
+        };
+
+        // Update the attachment button to allow multiple selection
+        attachmentBtn.addEventListener('click', () => {
+            imageUpload.click();
+        });
+
+        // Send message on button click
+        sendBtn.addEventListener('click', sendMessage);
+
+        // Send message on Enter key
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
         // Auto-resize textarea
         messageInput.addEventListener('input', function() {
             this.style.height = 'auto';
@@ -629,176 +884,11 @@
             // Enable/disable send button based on input
             sendBtn.disabled = this.value.trim() === '' && imageUpload.files.length === 0;
         });
-    
-        // Scroll to bottom of chat
-        function scrollToBottom() {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-    
-        // Connect to WebSocket
-        const chatSocket = new WebSocket(
-            (window.location.protocol === 'https:' ? 'wss://' : 'ws://') +
-            window.location.host +
-            '/ws/chat/' + roomName + '/'
-        );
-    
-        // Handle incoming messages
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            
-            if (data.type === 'message') {
-                // Remove empty state if it exists
-                const emptyState = document.querySelector('.empty-state');
-                if (emptyState) emptyState.remove();
-                
-                // Handle regular message
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${data.sender === currUser ? 'outgoing' : 'incoming'}`;
-                
-                if (data.isImage) {
-                    messageDiv.innerHTML = `
-                        <img src="${data.message}" class="message-image" alt="Sent image">
-                        <div class="message-time">
-                            ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                            ${data.sender === currUser ? 
-                                `<span class="message-status ${data.seen ? 'double' : 'single'}">
-                                    <i class="fas fa-check"></i>
-                                </span>` 
-                                : ''}
-                        </div>
-                    `;
-                } else {
-                    messageDiv.innerHTML = `
-                        <div class="message-text">${data.message}</div>
-                        <div class="message-time">
-                            ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                            ${data.sender === currUser ? 
-                                `<span class="message-status ${data.seen ? 'double' : 'single'}">
-                                    <i class="fas fa-check"></i>
-                                </span>` 
-                                : ''}
-                        </div>
-                    `;
-                }
-                
-                chatMessages.appendChild(messageDiv);
-                scrollToBottom();
-            }
-        };
-    
-        // Send message function with page reload
-        async function sendMessage() {
-            const message = messageInput.value.trim();
-            const imageFile = imageUpload.files[0];
-            
-            if (!message && !imageFile) return;
-    
-            const formData = new FormData();
-            if (message) formData.append('message', message);
-            if (imageFile) formData.append('image', imageFile);
-    
-            try {
-                const response = await axios.post(
-                    window.location.href,
-                    formData,
-                    {
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}',
-                            'Content-Type': 'multipart/form-data'
-                        },
-                        timeout: 1000
-                    }
-                );
-    
-                if (response.data.status === 'success') {
-                    // Clear inputs immediately for better UX
-                    if (imageFile) {
-                        clearImagePreview();
-                    }
-                    if (message) {
-                        messageInput.value = '';
-                        messageInput.style.height = 'auto';
-                    }
-                    sendBtn.disabled = true;
-                    
-                    // Reload the page after successful message send
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 500); // Small delay to ensure message is processed
-                }
-            } catch (error) {
-                console.error('Error details:', error);
-                if (error.response) {
-                    console.error('Server response:', error.response.data);
-                }
-                alert('Message sending failed. Check console for details.');
-            }
-        }
-    
-        // Handle image upload
-        attachmentBtn.addEventListener('click', () => {
-            imageUpload.click();
-        });
-    
-        imageUpload.addEventListener('change', (e) => {
-            if (e.target.files[0]) {
-                const file = e.target.files[0];
-                
-                if (!file.type.startsWith('image/')) {
-                    alert('Please select an image file');
-                    return;
-                }
-    
-                const reader = new FileReader();
-                
-                reader.onload = function(event) {
-                    imagePreviewContainer.innerHTML = `
-                        <div class="image-preview">
-                            <img src="${event.target.result}" alt="Preview">
-                            <button class="remove-image" onclick="clearImagePreview()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    `;
-                    imagePreviewContainer.style.display = 'block';
-                    sendBtn.disabled = false;
-                };
-                
-                reader.readAsDataURL(file);
-            }
-        });
-    
-        // Clear image preview
-        window.clearImagePreview = function() {
-            imagePreviewContainer.innerHTML = '';
-            imagePreviewContainer.style.display = 'none';
-            imageUpload.value = '';
-            sendBtn.disabled = messageInput.value.trim() === '';
-        };
-    
-        // Send message on button click
-        sendBtn.addEventListener('click', sendMessage);
-    
-        // Send message on Enter key
-        messageInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-    
+
         // Scroll to bottom when page loads
-        window.addEventListener('load', scrollToBottom);
-    
-        // Start auto-refresh when page loads
-        window.addEventListener('load', startAutoRefresh);
-    
-        // Stop auto-refresh when page unloads
-        window.addEventListener('unload', stopAutoRefresh);
-    
-        // Keep scroll at bottom when new messages arrive
-        const observer = new MutationObserver(scrollToBottom);
-        observer.observe(chatMessages, { childList: true });
+        window.addEventListener('load', function() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
     </script>
 </body>
 </html>
