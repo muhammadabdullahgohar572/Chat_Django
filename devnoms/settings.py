@@ -35,6 +35,7 @@ CHANNEL_LAYERS = {
 
 
 MIDDLEWARE = [
+     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -44,6 +45,20 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
 ]
+
+
+
+
+
+
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
 
 ROOT_URLCONF = "devnoms.urls"
 
@@ -102,12 +117,28 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
+
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'koyebdb',
+#         'USER': 'koyeb-adm',
+#         'PASSWORD': 'npg_hj27JSByFZLU',
+#         'HOST': 'ep-late-darkness-a2hkcdfj.eu-central-1.pg.koyeb.app',
+#         'OPTIONS': {'sslmode': 'require'},
+#     }
+# }
 
 import cloudinary
 import cloudinary.uploader
