@@ -132,11 +132,11 @@ STATIC_ROOT=os.path.join(BASE_DIR,'staticfiles')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'koyebdb',
-        'USER': 'koyeb-adm',
-        'PASSWORD': 'npg_Wl34iHrRqLYx',
-        'HOST': 'ep-lucky-bird-a2j752bg.eu-central-1.pg.koyeb.app',
-        'OPTIONS': {'sslmode': 'require'},
+        'NAME': 'defaultdb',
+        'USER': 'avnadmin',
+        'PASSWORD': 'AVNS_ddCr3Veso9grzt2aqhd',
+        'HOST': 'pg-ac4b4510cde34abc8e805b7c7b1472b8-test1645099799-choreo-org-a.d.aivencloud.com',
+        'PORT':'23763',
     }
 }
 

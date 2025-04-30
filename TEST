@@ -1,0 +1,5 @@
+DB_HOST=pg-ac4b4510cde34abc8e805b7c7b1472b8-test1645099799-choreo-org-a.d.aivencloud.com
+DB_PORT=23763
+DB_USER=avnadmin
+DB_NAME=defaultdb
+DB_PWD=AVNS_ddCr3Veso9grzt2aqhd
